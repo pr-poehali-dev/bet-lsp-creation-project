@@ -1,0 +1,18 @@
+{
+  "tests": [
+    {
+      "name": "Create test payment",
+      "method": "POST",
+      "body": {
+        "amount": 500,
+        "return_url": "https://example.com"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "status": "test_mode",
+        "payment_id": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

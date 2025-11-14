@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { toast } from 'sonner';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 
 interface Match {
   id: number;
@@ -62,6 +64,9 @@ export default function Index() {
   const [bets, setBets] = useState<Bet[]>([]);
   const [selectedBets, setSelectedBets] = useState<{ [key: number]: 'home' | 'draw' | 'away' | null }>({});
   const [betAmounts, setBetAmounts] = useState<{ [key: number]: number }>({});
+  const [topUpAmount, setTopUpAmount] = useState(500);
+  const [isTopUpOpen, setIsTopUpOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleBetSelect = (matchId: number, outcome: 'home' | 'draw' | 'away') => {
     setSelectedBets(prev => ({
@@ -115,6 +120,40 @@ export default function Index() {
   const totalBetAmount = bets.reduce((sum, bet) => sum + bet.amount, 0);
   const potentialWin = bets.reduce((sum, bet) => sum + (bet.amount * bet.odds), 0);
 
+  const handleTopUp = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('https://functions.poehali.dev/379a9387-ea81-48df-9696-f61a74b4c440', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          amount: topUpAmount,
+          return_url: window.location.href
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.status === 'test_mode') {
+        setBalance(prev => prev + topUpAmount);
+        toast.success('Баланс пополнен!', {
+          description: `Тестовый режим: +${topUpAmount} ₽`
+        });
+        setIsTopUpOpen(false);
+      } else if (data.status === 'success') {
+        window.location.href = data.confirmation_url;
+      } else {
+        toast.error(data.message || 'Ошибка пополнения');
+      }
+    } catch (error) {
+      toast.error('Ошибка соединения');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
@@ -134,6 +173,55 @@ export default function Index() {
                   </div>
                 </CardContent>
               </Card>
+              <Dialog open={isTopUpOpen} onOpenChange={setIsTopUpOpen}>
+                <DialogTrigger asChild>
+                  <Button className="bg-secondary hover:bg-secondary/90">
+                    <Icon name="Plus" size={18} className="mr-2" />
+                    Пополнить
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle className="flex items-center gap-2">
+                      <Icon name="CreditCard" size={24} className="text-primary" />
+                      Пополнение через СБП
+                    </DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Сумма пополнения</label>
+                      <Input
+                        type="number"
+                        min="100"
+                        max="100000"
+                        value={topUpAmount}
+                        onChange={(e) => setTopUpAmount(Number(e.target.value))}
+                        className="text-lg"
+                      />
+                    </div>
+                    <div className="grid grid-cols-3 gap-2">
+                      <Button variant="outline" onClick={() => setTopUpAmount(500)}>500 ₽</Button>
+                      <Button variant="outline" onClick={() => setTopUpAmount(1000)}>1000 ₽</Button>
+                      <Button variant="outline" onClick={() => setTopUpAmount(5000)}>5000 ₽</Button>
+                    </div>
+                    <Button 
+                      onClick={handleTopUp} 
+                      disabled={isLoading || topUpAmount < 100}
+                      className="w-full bg-primary hover:bg-primary/90"
+                    >
+                      {isLoading ? (
+                        <Icon name="Loader2" size={18} className="mr-2 animate-spin" />
+                      ) : (
+                        <Icon name="Check" size={18} className="mr-2" />
+                      )}
+                      Оплатить {topUpAmount} ₽
+                    </Button>
+                    <p className="text-xs text-muted-foreground text-center">
+                      Безопасная оплата через Систему Быстрых Платежей
+                    </p>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>
