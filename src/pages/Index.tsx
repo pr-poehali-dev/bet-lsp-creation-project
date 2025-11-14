@@ -34,7 +34,7 @@ const matches: Match[] = [
     awayTeam: 'Рассвет',
     date: '15 ноября',
     time: '19:00',
-    odds: { home: 2.1, draw: 3.2, away: 3.3 },
+    odds: { home: 1.30, draw: 1.30, away: 1.30 },
     status: 'live'
   },
   {
@@ -43,7 +43,7 @@ const matches: Match[] = [
     awayTeam: 'Микса',
     date: '15 ноября',
     time: '21:30',
-    odds: { home: 1.9, draw: 3.4, away: 3.8 },
+    odds: { home: 1.30, draw: 1.30, away: 1.30 },
     status: 'upcoming'
   },
   {
@@ -52,7 +52,7 @@ const matches: Match[] = [
     awayTeam: 'Рабона',
     date: '16 ноября',
     time: '16:00',
-    odds: { home: 2.4, draw: 3.1, away: 2.9 },
+    odds: { home: 1.30, draw: 1.30, away: 1.30 },
     status: 'upcoming'
   }
 ];
