@@ -30,38 +30,29 @@ interface Bet {
 const matches: Match[] = [
   {
     id: 1,
-    homeTeam: 'Спартак',
-    awayTeam: 'Динамо',
+    homeTeam: 'Рыцари',
+    awayTeam: 'Рассвет',
     date: '15 ноября',
     time: '19:00',
-    odds: { home: 2.1, draw: 3.2, away: 3.5 },
+    odds: { home: 2.1, draw: 3.2, away: 3.3 },
     status: 'live'
   },
   {
     id: 2,
-    homeTeam: 'Зенит',
-    awayTeam: 'ЦСКА',
+    homeTeam: 'Метеор',
+    awayTeam: 'Микса',
     date: '15 ноября',
     time: '21:30',
-    odds: { home: 1.8, draw: 3.4, away: 4.2 },
+    odds: { home: 1.9, draw: 3.4, away: 3.8 },
     status: 'upcoming'
   },
   {
     id: 3,
-    homeTeam: 'Локомотив',
-    awayTeam: 'Краснодар',
+    homeTeam: 'Крепость',
+    awayTeam: 'Рабона',
     date: '16 ноября',
     time: '16:00',
-    odds: { home: 2.3, draw: 3.1, away: 3.0 },
-    status: 'upcoming'
-  },
-  {
-    id: 4,
-    homeTeam: 'Рубин',
-    awayTeam: 'Ростов',
-    date: '16 ноября',
-    time: '18:30',
-    odds: { home: 2.5, draw: 3.0, away: 2.8 },
+    odds: { home: 2.4, draw: 3.1, away: 2.9 },
     status: 'upcoming'
   }
 ];
