@@ -58,7 +58,7 @@ const matches: Match[] = [
 ];
 
 export default function Index() {
-  const [balance, setBalance] = useState(10000);
+  const [balance, setBalance] = useState(0);
   const [bets, setBets] = useState<Bet[]>([]);
   const [selectedBets, setSelectedBets] = useState<{ [key: number]: 'home' | 'draw' | 'away' | null }>({});
   const [betAmounts, setBetAmounts] = useState<{ [key: number]: number }>({});
